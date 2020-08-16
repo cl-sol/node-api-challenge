@@ -16,12 +16,12 @@ The Minimum Viable Product must be completed in three hours.
 
 Follow these steps to set up and work on your project:
 
--   [ ] Create a forked copy of this project.
--   [ ] Add your _Team Lead_ as collaborator on Github.
--   [ ] Clone your forked version of the Repository.
--   [ ] Create a new Branch on the clone: git checkout -b `firstName-lastName`.
--   [ ] Implement the project on this Branch, committing changes regularly.
--   [ ] Push commits: git push origin `firstName-lastName`.
+-   [ x] Create a forked copy of this project.
+-   [ x] Add your _Team Lead_ as collaborator on Github.
+-   [ x] Clone your forked version of the Repository.
+-   [ x] Create a new Branch on the clone: git checkout -b `firstName-lastName`.
+-   [ x] Implement the project on this Branch, committing changes regularly.
+-   [x] Push commits: git push origin `firstName-lastName`.
 
 Follow these steps for completing your project.
 
@@ -40,13 +40,25 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 -   [ ] Mention two parts of Express that you learned about this week.
 
+1. Express is similar to react middleware in that it pauses an action to do something to it, and then send it back into it's regular cycle.
+
+2. You can make your own custom middleware to take advantage of Express functionality. They will need req, res and next.
+
 -   [ ] Describe Middleware?
+
+Middleware allows you to access request and response objects that you can modify before the server sends it back to the user.
 
 -   [ ] Describe a Resource?
 
+Everything is a resource. Basically an object that receieve CRUD methods.
+
 -   [ ] What can the API return to help clients know if a request was successful?
 
+They can return a 200 status code.
+
 -   [ ] How can we partition our application into sub-applications?
+
+By using routers, applications can be split and therefore be easier to maintain.
 
 ## Minimum Viable Product
 
