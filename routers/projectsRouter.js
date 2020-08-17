@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
         })
 });
 
-router.get("/:id", (req, res)=> {
+router.get("/:id", validateProjectId, (req, res)=> {
     Projects.getProjectActions(req.params.id)
     .then(project => {
         if(project === 0) {
@@ -33,7 +33,7 @@ router.get("/:id", (req, res)=> {
     })
 })
 
-router.get("/:id/action", (req, res) => {
+router.get("/:id/action", validateProjectId, (req, res) => {
     Projects.getProjectActions(req.params.id)
         .then(action => {
             if(action === 0 ) {
@@ -47,7 +47,7 @@ router.get("/:id/action", (req, res) => {
 })
 
 //CRUD - post/Create
-router.post("/", (req, res) => {
+router.post("/", validateProject, (req, res) => {
     Projects.insert(req.body)
         .then(project => {
             res.status(201).json(project)
@@ -61,7 +61,7 @@ router.post("/", (req, res) => {
 })
 
 //CRUD - put/Update
-router.put("/:id", (req, res) => {
+router.put("/:id", validateProjectId, validateProject, (req, res) => {
     Projects.update(req.params.id, req.body)
         .then((project) => {
             res.status(200).json(project);
@@ -75,7 +75,7 @@ router.put("/:id", (req, res) => {
 });
 
 //CRUD - delete
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateProjectId, (req, res) => {
     Projects.remove(req.params.id)
         .then(count => {
             if(count === 0) {
@@ -93,4 +93,39 @@ router.delete("/:id", (req, res) => {
             })
         })
 })
+
+//middleware
+function validateProjectId(req, res, next) {
+    Projects.get(req.params.id)
+        .then(project => {
+            if(project) {
+                req.project = project;
+                next();
+            } else {
+                res.status(400).json({
+                    message: "Invalid project ID"
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                message: "Error connecting to projects"
+            })
+        })
+};
+
+function validateProject(req, res, next) {
+    if(Object.keys(req.body).length === 0) {
+        res.status(400).json({
+            message: "Missing required data"
+        })
+    } else if(!req.body.name || !req.body.description) {
+        res.status(400).json({
+            message: "Name and description are required"
+        })
+    } else {
+        return next();
+    }
+};
 module.exports = router;
