@@ -1,7 +1,7 @@
 //imports
 const express = require("express");
-const projects = require("../data/helpers/projectModel");
-const actions = require("../data/helpers/actionModel");
+const Projects = require("../data/helpers/projectModel");
+// const actions = require("../data/helpers/actionModel");
 
 //router
 const router = express.Router();
@@ -10,7 +10,7 @@ router.use(express.json());
 
 //CRUD - get/Read
 router.get("/", (req, res) => {
-    projects.get()
+    Projects.get()
         .then(project => {
             res.status(200).json(project);
         })
@@ -20,5 +20,5 @@ router.get("/", (req, res) => {
         })
 });
 
-module.exports(router);
+module.exports = router;
 
