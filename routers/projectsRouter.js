@@ -77,10 +77,13 @@ router.put("/:id", (req, res) => {
 //CRUD - delete
 router.delete("/:id", (req, res) => {
     Projects.remove(req.params.id)
-        .then(project => {
-            if(project > 0) {
-                res.status(200).json({
-                    message: "Project has been successfully removed"})
+        .then(count => {
+            if(count === 0) {
+                res.status(404).json({
+                    message: "Project with this ID does not exist"
+                })
+            } else {
+                res.status(200).json(count)
             }
         })
         .catch(err => {
