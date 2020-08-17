@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
         })
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateActionId, (req, res) => {
     Action.get(req.params.id)
         .then((action) => {
             res.status(200).json(action);
@@ -35,7 +35,7 @@ router.get("/:id", (req, res) => {
 });
 
 //CRUD - post
-router.post("/", (req, res) => {
+router.post("/", validateAction, (req, res) => {
     Action.insert(req.body)
         .then(action => {
             res.status(201).json(action)
@@ -49,7 +49,7 @@ router.post("/", (req, res) => {
 });
 
 //CRUD - put
-router.put("/:id", (req, res) => {
+router.put("/:id", validateActionId, validateAction, (req, res) => {
     Action.update(req.params.id, req.params.body)
         .then(action => {
             res.status(200).json(action)
@@ -63,7 +63,7 @@ router.put("/:id", (req, res) => {
 });
  
 //CRUD - delete
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateActionId, (req, res) => {
     Action.remove(req.params.id)
         .then(count => {
             if(count === 0) {
@@ -81,5 +81,41 @@ router.delete("/:id", (req, res) => {
             })
         })
 });
+
+//middleware
+function validateActionId(req, res, next) {
+    Action.get(req.params.id)
+        .then(acction => {
+            if(action) {
+                req.action = action;
+                next();
+            } else {
+                res.status(400).json({
+                    message: "Invalid user ID"
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status*(500).json({
+                message: "Not a valid action ID"
+            })
+        })
+};
+
+function validateAction(req, res, next) {
+    if(Object.keys(req.body).length === 0) {
+        req.status(400).json({
+            message: "Missing required data"
+        })
+    } else if
+        (!req.body.description || !req.body.notes) {
+            res.status(400).json({
+                message: "Description and notes are required"
+            })
+    } else {
+        return next();
+    }
+}
 
 module.exports = router;
