@@ -17,4 +17,10 @@ server.get("/", (req, res) => {
 server.use("/api/projects", projectsRouter);
 server.use("/api/actions", actionsRouter);
 
+//logger
+function logger(req, res, next) {
+    console.log(`${req.method} ${req.url} ${new Date.toISOString()}`)
+    next()
+}
+
 module.exports = server;
